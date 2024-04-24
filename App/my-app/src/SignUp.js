@@ -1,7 +1,7 @@
 import react from 'react';
 import {Button, Text,  TextInput,  View} from 'react-native';
 
-function Login() {
+function SignUp() {
   return (
     <View>
       <Text>Login</Text>
@@ -9,13 +9,15 @@ function Login() {
         placeholder="Username"
       />
       <TextInput
+        placeholder="Email"
+      />
+      <TextInput
         placeholder="Password"
       />
-      <Button title="Login" />
-      <Text>Don't have an account?</Text>
-        <Button title="Sign Up" />
+      <Button title="Sign Up" />
+
     </View>
   );
 }
 
-export default Login;
+export default SignUp;
