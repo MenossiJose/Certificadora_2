@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
+app.use(express.json());
+const bcrypt = require('bcryptjs');
 
 const mongoURI = 'mongodb+srv://josemenossi:Drgjuv50!@cluster0.04ecmcj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
 
@@ -21,14 +23,20 @@ app.get('/', (req, res) => {
 app.post('/signup', async(req, res) => {
     const {name, email, password} = req.body;
 
+    const oldUser = await User.findOne({email});
+
     if(oldUser){
         return res.send({status:"error", data: "Email already exists"});
     }
 
-    const oldUser = await User.findOne({email});
+    const encryptedPassword = await bcrypt.hash(password, 12);
 
     try{
-        await User.create({name, email, password});
+        await User.create({
+            name:name,
+            email:email, 
+            password:encryptedPassword
+        });
 
         res.send({status:"ok", data: "User created"});
     }

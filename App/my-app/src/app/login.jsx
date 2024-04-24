@@ -1,5 +1,6 @@
 import react from 'react';
 import {Button, Text,  TextInput,  View} from 'react-native';
+import { Link, router } from 'expo-router';
 
 function Login() {
   return (
@@ -13,7 +14,11 @@ function Login() {
       />
       <Button title="Login" />
       <Text>Don't have an account?</Text>
-        <Button title="Sign Up" />
+
+      <Button title="Sign Up" onPress={() => router.replace("/signUp")} />
+
+      <Link href={"/"}>Go Back</Link>
+      
     </View>
   );
 }
