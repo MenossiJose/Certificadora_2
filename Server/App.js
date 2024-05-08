@@ -3,10 +3,14 @@ const app = express();
 const mongoose = require('mongoose');
 app.use(express.json());
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 const mongoURI = 'mongodb+srv://josemenossi:Drgjuv50!@cluster0.04ecmcj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
 
-mongoose.connect(mongoURI).then(() => {
+const JWT_SECRET = 'josemenossi';
+
+mongoose.
+    connect(mongoURI).then(() => {
     console.log('Connected to MongoDB');
 }).catch((err) => {
     console.log('Error connecting to MongoDB', err);
@@ -44,6 +48,29 @@ app.post('/signup', async(req, res) => {
          res.send({status:"error", data: err});
     }
 });
+
+app.post("/login-user", async(req, res) => {
+    const {email, password} = req.body;
+
+    const user = await User
+    .findOne({email:email});
+
+    if(!user){
+        return res.send({status:"error", data: "Email does not exist"});
+    }
+
+    if(await bcrypt.compare(password, user.password)){
+        const token = jwt.sign({email: user.email}, JWT_SECRET);
+
+        if(res.status(200)){
+            res.send({status:"ok", data: token});
+        }
+        else{
+            res.send({status:"error", data: "Invalid password"});
+        }
+    }
+}
+);
 
 app.listen(3000, () => {
     console.log('Server is running on port 3000');

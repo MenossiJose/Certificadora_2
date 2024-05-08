@@ -37,7 +37,7 @@ function SignUp() {
       password,
     };
 
-    axios.post('http://192.168.3.4:3000/signup', userData)
+    axios.post('http://10.0.0.176:3000/signup', userData)
       .then((res) => {
         console.log(res.data);
       })
