@@ -72,6 +72,22 @@ app.post("/login-user", async(req, res) => {
 }
 );
 
+app.post('/userdata',async(req, res) => {
+    const {token} = req.body;
+
+    try{
+        const user = jwt.verify(token, JWT_SECRET);
+        const useremail = await user.email;
+
+        User.findOne({email:useremail}).then((user) => {
+            return res.send({status:"ok", data: user});
+        });
+    }
+    catch(err){
+         return res.send({status:"error", data: "Invalid token"});
+    }
+}
+);
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
 });

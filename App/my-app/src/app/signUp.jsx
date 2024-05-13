@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import {Image, StyleSheet, Button, Pressable, Text, TextInput, View } from 'react-native';
-import { Link } from 'expo-router';
+import React, { useState} from 'react';
+import {Image, StyleSheet, Button, Pressable, Text, TextInput, View, Alert  } from 'react-native';
+import {router, Link } from 'expo-router';
 import axios from 'axios';
 
 function SignUp() {
@@ -37,13 +37,17 @@ function SignUp() {
       password,
     };
 
-    axios.post('http://10.0.0.176:3000/signup', userData)
+    axios.
+    post('http://10.0.0.176:3000/signup', userData)
       .then((res) => {
         console.log(res.data);
+        if (res.data.status == 'ok') {
+          Alert.alert('Registered Successfully!!');
+          router.replace("/");
+        } else {
+          Alert.alert(JSON.stringify(res.data));
+        }
       })
-      .catch((err) => {
-        console.error(err);
-      });
   };
 
   return (
