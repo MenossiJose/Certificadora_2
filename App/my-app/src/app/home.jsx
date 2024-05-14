@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import {Image, StyleSheet, Pressable, Text,  TextInput, View, Alert} from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -22,7 +22,46 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+      <View style={styles.header}>
+        <Image style={styles.iconPlayer} source={require('./img/icon.png')} />
+        <View style={styles.playerInfo}>
+          <Text
+          style={
+            {
+              fontSize: 18,
+              fontWeight: 'bold',
+              marginBottom: 5,
+            }
+          }>Fulano</Text>
+          <Text
+          style={
+            {
+              fontSize: 14,
+              fontWeight: 'bold',
+            }
+          }
+          >POS</Text>
+          <Text
+          style={
+            {
+              color: '#1869B2',
+              fontSize: 12,
+              fontWeight: 'bold',
+            }
+          }>QB</Text>
+        </View>
+      </View>
+      <View style={styles.bodyContent}>
+        <View>
+          <Text>Peso</Text>
+        </View>
+        <View>
+          <Text>Altura</Text>
+        </View>
+        <View>
+          <Text>Idade</Text>
+        </View>
+      </View>
       <StatusBar style="auto" />
     </View>
   );
@@ -31,8 +70,31 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#25292e',
-    alignItems: 'center',
-    justifyContent: 'center',
+    fontFamily: 'Roboto',
   },
+  header: {
+    backgroundColor: '#E9E9E9',
+    display: 'flex',
+    flexDirection: 'row',
+    height: 86,
+    alignItems: 'center',
+    paddingLeft: 20,
+  },
+  playerInfo: {
+    fontFamily: 'Roboto',
+    fontWeight: 'bold',
+    marginLeft: '10%',
+  },
+  bodyContent: {
+    flex: 2,
+    flexDirection: 'column',
+    justifyContent: 'space-evenly',
+    backgroundColor: '#2B2F3A',
+    
+  },
+  iconPlayer: {
+    width: 70,
+    height: 70,
+  },
+  
 });

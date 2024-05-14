@@ -54,6 +54,7 @@ function Login() {
         <Pressable style={styles.buttons} title="Sign Up" onPress={() => router.replace("/signUp")}>
           <Text >Sing Up</Text>
         </Pressable>
+        <Pressable style={styles.buttons} title="Home" onPress={() => router.replace("/home")}/>
       </View>
       
     </View>
