@@ -10,7 +10,7 @@ export default function App() {
         const token = await AsyncStorage.getItem('token');
         console.log(token);
         axios
-        .post('http:////10.0.0.176:3000/userdata', {token: token})
+        .post('http:////25.5.187.167:3000/userdata', {token: token})
         .then((res) => {
             console.log(res.data);
         });
@@ -52,17 +52,43 @@ export default function App() {
         </View>
       </View>
       <View style={styles.bodyContent}>
-        <View>
-          <Text>Peso</Text>
+        <View style={styles.cardContainer}>
+          <View style={styles.cardStats}>
+            <Image style={styles.icons} source={require('./img/peso.png')} />
+            <Text style={styles.textStats} >Peso</Text>
+          </View>
+          <View>
+          <Pressable>
+            <Text style={styles.dataInput}>+</Text>
+            </Pressable>
+          </View>
         </View>
-        <View>
-          <Text>Altura</Text>
+        <View style={styles.cardContainer}>
+          <View style={styles.cardStats}>
+            <Image style={styles.icons} source={require('./img/altura.png')} />
+            <Text style={styles.textStats}>Altura</Text>
+          </View>
+          <View>
+          <Pressable>
+            <Text style={styles.dataInput}>+</Text>
+            </Pressable>
+          </View>
         </View>
-        <View>
-          <Text>Idade</Text>
+        <View style={styles.cardContainer}>
+          <View style={styles.cardStats}>
+            <Image style={styles.icons} source={require('./img/idade.png')} />
+            <Text style={styles.textStats}>Idade</Text>
+          </View>
+          <View>
+            <Pressable>
+            <Text style={styles.dataInput}>+</Text>
+            </Pressable>
+          </View>
         </View>
       </View>
-      <StatusBar style="auto" />
+      <View style={styles.navContainer}>
+
+      </View>
     </View>
   );
 }
@@ -88,13 +114,59 @@ const styles = StyleSheet.create({
   bodyContent: {
     flex: 2,
     flexDirection: 'column',
-    justifyContent: 'space-evenly',
+    justifyContent: 'start',
     backgroundColor: '#2B2F3A',
     
+  },
+  cardContainer : {
+    height: 73,
+    weight: 336,
+    display: 'flex',
+    flexDirection: 'row',
+    marginLeft: 12,
+    marginRight: 12,
+    marginTop: 40,
+    justifyContent: 'space-between',
+    paddingLeft: 20,
+    paddingTop: 10,
+    paddingRight: 25,
   },
   iconPlayer: {
     width: 70,
     height: 70,
+  },
+  icons: {
+    width: 52,
+    height: 48,
+  },
+  cardStats: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'start',
+  },
+  textStats: {
+    fontSize: 18,
+    color: 'white',
+    marginTop: 10,
+    marginLeft: 10,
+  },
+  dataInput: {
+    backgroundColor: '#D9D9D9',
+    fontSize: 18,
+    marginTop: 5,
+    marginLeft: 10,
+    marginBottom: 5,
+    paddingTop: 4,
+    paddingBottom: 4,
+    paddingLeft: 10,
+    paddingRight: 10,
+    borderRadius: 15,
+  },
+  navContainer: {
+    backgroundColor: '#1869B2',
+    position: 'absolute',
+    bottom: 0,
+    height: 44,
   },
   
 });

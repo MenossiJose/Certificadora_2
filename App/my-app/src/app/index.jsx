@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,  useEffect  } from 'react';
 import {Image, StyleSheet, Pressable, Text,  TextInput, View, Alert} from 'react-native';
 import { Link, router } from 'expo-router';
 import axios from 'axios';
@@ -8,6 +8,17 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 function Login() {
   const [email, setEmail] = useState(''); // State variable for name
   const [password, setPassword] = useState(''); // State variable for password
+  const [isLoggedIn, setIsLoggedIn] = useState(false);// State variable the verify if the user is already logged in
+
+  async function getData() {
+    const data = await AsyncStorage.getItem('isLoggedIn');
+    console.log(data,'at index.jsx');
+    setIsLoggedIn(data);
+  }
+
+  useEffect(() => {
+    getData();
+  });
 
   function handleSubmit() {
     console.log(email, password);
@@ -15,11 +26,12 @@ function Login() {
       email,
       password,
     };
-    axios.post('http://10.0.0.176:3000/login-user', userData).
+    axios.post('http://25.5.187.167:3000/login-user', userData).
     then((res) => {console.log(res.data);
       if (res.data.status == 'ok') {
         Alert.alert('Logged in Successfully!!');
         AsyncStorage.setItem('token', res.data.data);
+        AsyncStorage.setItem('isLoggedIn', JSON.stringify(true));
         router.replace("/home");;
       } else {
         Alert.alert(JSON.stringify(res.data));
@@ -28,8 +40,15 @@ function Login() {
     })
   }
 
-  return (
-    <View style={styles.container}>
+  if(isLoggedIn){
+    return(
+      router.replace("/home")
+    )
+  }
+
+  else{
+    return(
+      <View style={styles.container}>
       <View style={styles.imageContainer}>
         <Image style={styles.image} source={require('./img/Wolvesprojeto 1.png')} />
       </View>
@@ -56,9 +75,9 @@ function Login() {
         </Pressable>
         <Pressable style={styles.buttons} title="Home" onPress={() => router.replace("/home")}/>
       </View>
-      
     </View>
-  );
+    )
+  }
 }
 
 const styles = StyleSheet.create({

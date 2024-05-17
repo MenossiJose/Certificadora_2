@@ -38,7 +38,7 @@ function SignUp() {
     };
 
     axios.
-    post('http://10.0.0.176:3000/signup', userData)
+    post('http://25.5.187.167:3000/signup', userData)
       .then((res) => {
         console.log(res.data);
         if (res.data.status == 'ok') {
