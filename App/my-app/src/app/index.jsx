@@ -26,7 +26,7 @@ function Login() {
       email,
       password,
     };
-    axios.post('http://25.5.187.167:3000/login-user', userData).
+    axios.post('http://10.0.0.176:3000/login-user', userData).
     then((res) => {console.log(res.data);
       if (res.data.status == 'ok') {
         Alert.alert('Logged in Successfully!!');
@@ -73,7 +73,6 @@ function Login() {
         <Pressable style={styles.buttons} title="Sign Up" onPress={() => router.replace("/signUp")}>
           <Text >Sing Up</Text>
         </Pressable>
-        <Pressable style={styles.buttons} title="Home" onPress={() => router.replace("/home")}/>
       </View>
     </View>
     )

@@ -1,16 +1,20 @@
-import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {Image, StyleSheet, Pressable, Text,  TextInput, View, Alert} from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function App() {
 
+  const [pos, setPos] = useState(''); // State variable for name
+  const [alt, setAlt] = useState(''); // State variable for height
+  const [pes, setPes] = useState(''); // State variable for weight
+  const [idade, setIdade] = useState(''); // State variable for age
+
     async function getData(){
         const token = await AsyncStorage.getItem('token');
         console.log(token);
         axios
-        .post('http:////25.5.187.167:3000/userdata', {token: token})
+        .post('http://10.0.0.176:3000/userdata', {token: token})
         .then((res) => {
             console.log(res.data);
         });
@@ -41,14 +45,16 @@ export default function App() {
             }
           }
           >POS</Text>
-          <Text
-          style={
-            {
+         <TextInput style={{
               color: '#1869B2',
               fontSize: 12,
               fontWeight: 'bold',
-            }
-          }>QB</Text>
+            }}
+          placeholder="+"
+          value={pos}
+          onChangeText={(text) => setPos(text)}
+        />
+         
         </View>
       </View>
       <View style={styles.bodyContent}>
@@ -59,7 +65,11 @@ export default function App() {
           </View>
           <View>
           <Pressable>
-            <Text style={styles.dataInput}>+</Text>
+          <TextInput style={styles.dataInput}
+            placeholder="+"
+            value={pes}
+            onChangeText={(text) => setPes(text)}
+          />
             </Pressable>
           </View>
         </View>
@@ -70,7 +80,11 @@ export default function App() {
           </View>
           <View>
           <Pressable>
-            <Text style={styles.dataInput}>+</Text>
+          <TextInput style={styles.dataInput}
+            placeholder="+"
+            value={alt}
+            onChangeText={(text) => setAlt(text)}
+          />
             </Pressable>
           </View>
         </View>
@@ -81,13 +95,18 @@ export default function App() {
           </View>
           <View>
             <Pressable>
-            <Text style={styles.dataInput}>+</Text>
+            <TextInput style={styles.dataInput}
+              placeholder="+"
+              value={idade}
+              onChangeText={(text) => setIdade(text)}
+            />
             </Pressable>
           </View>
         </View>
       </View>
       <View style={styles.navContainer}>
-
+        <Image source={require('./img/user_nav.png')} />
+        <Image source={require('./img/dumbell_nav.png')} />
       </View>
     </View>
   );
@@ -165,8 +184,13 @@ const styles = StyleSheet.create({
   navContainer: {
     backgroundColor: '#1869B2',
     position: 'absolute',
+    justifyContent: 'space-evenly',
+    flexDirection: 'row',
     bottom: 0,
+    width: '100%',
     height: 44,
+    paddingTop: 7,
+
   },
   
 });
