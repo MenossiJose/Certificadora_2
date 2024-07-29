@@ -5,24 +5,58 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function App() {
 
-  const [pos, setPos] = useState(''); // State variable for name
+  const [email, setEmail] = useState('');
+  const [pos, setPos] = useState(''); // State variable for position
   const [alt, setAlt] = useState(''); // State variable for height
   const [pes, setPes] = useState(''); // State variable for weight
   const [idade, setIdade] = useState(''); // State variable for age
-
-    async function getData(){
-        const token = await AsyncStorage.getItem('token');
-        console.log(token);
-        axios
-        .post('http://10.0.0.176:3000/userdata', {token: token})
+  const [username, setUsername] = useState(''); // State variable for username
+  
+  const getData = async () => {
+    const token = await AsyncStorage.getItem('token');
+    console.log(token);
+    axios
+        .post('http://192.168.3.4:3000/userdata', { token: token })
         .then((res) => {
+            if (res.data.status === 'ok') {
+                const userData = res.data.data;
+                setUsername(userData.name);
+                setEmail(userData.email);
+            } else {
+                Alert.alert('Error fetching user data');
+            }
             console.log(res.data);
+        })
+        .catch((error) => {
+            Alert.alert('An error occurred', error.message);
         });
-    }
+};
 
-    useEffect(() => {
-        getData();
-    }, []);
+  useEffect(() => {
+    getData();
+  }, []);
+
+  function handlePress(){
+    console.log(email, pos, alt, pes, idade);
+    const userData = {
+      email,
+      pos,
+      alt,
+      pes,
+      idade,
+    };
+    axios.post('http://192.168.3.4:3000/update-profile', userData).
+    then((res) => {
+      console.log(res.data);
+      if (res.data.status == 'ok') {
+        Alert.alert('Profile updated Successfully!!');
+      } else {
+        Alert.alert(JSON.stringify(res.data));
+      }
+  
+    })
+  };
+
 
   return (
     <View style={styles.container}>
@@ -36,7 +70,7 @@ export default function App() {
               fontWeight: 'bold',
               marginBottom: 5,
             }
-          }>Fulano</Text>
+          }>{username ?  username : 'Carregando...'}</Text>
           <Text
           style={
             {
@@ -102,6 +136,11 @@ export default function App() {
             />
             </Pressable>
           </View>
+        </View>
+        <View style={styles.saveContainer}>
+          <Pressable onPress={() => handlePress()}>
+            <Text style={styles.saveButton}>Salvar</Text>
+          </Pressable>
         </View>
       </View>
       <View style={styles.navContainer}>
@@ -191,6 +230,21 @@ const styles = StyleSheet.create({
     height: 44,
     paddingTop: 7,
 
+  },
+  saveContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 50,
+  },
+  saveButton: {
+      color: '#1869B2',
+      fontSize: 18,
+      fontWeight: 'bold',
+      textAlign: 'center',
+      marginTop: 50,
+      backgroundColor: '#D9D9D9',
+      padding: 7,
   },
   
 });

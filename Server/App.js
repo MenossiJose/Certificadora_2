@@ -72,6 +72,29 @@ app.post("/login-user", async(req, res) => {
 }
 );
 
+app.post('/update-profile', async (req, res) => {
+    const { email, age, weight, height, position } = req.body;
+
+    try {
+        // Find the user by email and update the information
+        const updatedUser = await User.findOneAndUpdate(
+            { email: email },
+            { age: age, weight: weight, height: height, position: position },
+            { new: true } // This option returns the modified document
+        );
+
+        if (!updatedUser) {
+            return res.send({ status: "error", data: "User not found" });
+        }
+
+        res.send({ status: "ok", data: "Profile updated", user: updatedUser });
+    } catch (err) {
+        res.send({ status: "error", data: err.message });
+    }
+});
+
+
+
 app.post('/userdata',async(req, res) => {
     const {token} = req.body;
 

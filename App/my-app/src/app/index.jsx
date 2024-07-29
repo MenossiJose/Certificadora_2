@@ -26,7 +26,7 @@ function Login() {
       email,
       password,
     };
-    axios.post('http://10.0.0.176:3000/login-user', userData).
+    axios.post('http://192.168.3.4:3000/login-user', userData).
     then((res) => {console.log(res.data);
       if (res.data.status == 'ok') {
         Alert.alert('Logged in Successfully!!');
@@ -35,6 +35,7 @@ function Login() {
         router.replace("/home");;
       } else {
         Alert.alert(JSON.stringify(res.data));
+        console.log("error");
       }
   
     })
