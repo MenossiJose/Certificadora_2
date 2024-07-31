@@ -32,7 +32,7 @@ function Login() {
         Alert.alert('Logged in Successfully!!');
         AsyncStorage.setItem('token', res.data.data);
         AsyncStorage.setItem('isLoggedIn', JSON.stringify(true));
-        router.replace("/home");;
+        router.replace("/home");
       } else {
         Alert.alert(JSON.stringify(res.data));
         console.log("error");

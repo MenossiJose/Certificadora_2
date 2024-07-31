@@ -39,7 +39,11 @@ app.post('/signup', async(req, res) => {
         await User.create({
             name:name,
             email:email, 
-            password:encryptedPassword
+            password:encryptedPassword,
+            position:null,
+            height:null,
+            weight:null,
+            age:null
         });
 
         res.send({status:"ok", data: "User created"});
@@ -74,7 +78,6 @@ app.post("/login-user", async(req, res) => {
 
 app.post('/update-profile', async (req, res) => {
     const { email, age, weight, height, position } = req.body;
-
     try {
         // Find the user by email and update the information
         const updatedUser = await User.findOneAndUpdate(
@@ -82,6 +85,7 @@ app.post('/update-profile', async (req, res) => {
             { age: age, weight: weight, height: height, position: position },
             { new: true } // This option returns the modified document
         );
+        console.log(updatedUser);
 
         if (!updatedUser) {
             return res.send({ status: "error", data: "User not found" });

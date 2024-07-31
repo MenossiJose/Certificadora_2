@@ -16,19 +16,19 @@ const UserDetailSchema = new mongoose.Schema({
     },
     position: {
         type: String,
-        required: true
+        required: false
     },
     height: {
-        type: Number,
-        required: true
+        type: String,
+        required: false
     },
     weight: {
-        type: Number,
-        required: true
+        type: String,
+        required: false
     },
     age: {
-        type: Number,
-        required: true
+        type: String,
+        required: false
     
     }
 },{
