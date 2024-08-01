@@ -1,7 +1,26 @@
-import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
+import React, { useEffect } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image } from 'react-native';
+import { Link, router, useLocalSearchParams, useRouter } from 'expo-router';
+import { fetchExercisesByBodypart } from '../../api/exerciseDB';
 
 export default function App() {
+  const router = useRouter();
+  const item = useLocalSearchParams();
+  console.log('got item', item);
+
+  useEffect(() => {
+    if(item) getExercises(item.name);
+  },[item]);
+
+  const getExercises = async(bodypart) => {
+    let data = await fetchExercisesByBodypart(bodypart);
+    console.log('got data', data);
+  }
+
+  const handleButton = () => {
+    router.replace("/home")
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Treinos</Text>
@@ -35,23 +54,31 @@ export default function App() {
         </View>
       </ScrollView>
       <View style={styles.footer}>
-        <Text style={styles.footerText}>👤</Text>
-        <Text style={styles.footerText}>🏋️</Text>
+        <TouchableOpacity onPress={handleButton}>
+          <Image source={require('./img/user_nav.png')} />
+        </TouchableOpacity>
+        <Image source={require('./img/dumbell_nav.png')} />
       </View>
     </View>
   );
 }
 
+
+
 const styles = StyleSheet.create({
   container: {
+    fontFamily: 'Roboto',
     flex: 1,
-    backgroundColor: '#2C2F38',
+    backgroundColor: '#2B2F3A',
   },
   scrollView: {
     flexGrow: 1,
     padding: 20,
+    borderTopWidth: 1.5,
+    borderColor: 'white',
   },
   header: {
+    fontWeight: 'bold',
     fontSize: 24,
     color: '#fff',
     textAlign: 'center',
@@ -61,18 +88,21 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   subHeader: {
-    fontSize: 18,
+    fontSize: 10,
     color: '#fff',
     marginBottom: 10,
   },
   workoutBox: {
-    backgroundColor: '#3E4149',
+    backgroundColor: '#2B2F3A',
     padding: 15,
-    borderRadius: 8,
+    borderRadius: 10,
     marginBottom: 15,
+    borderColor: 'white',
+    borderWidth: 1.5,
   },
   workoutTitle: {
-    fontSize: 16,
+    fontSize: 18,
+    fontWeight: 'bold',
     color: '#fff',
     marginBottom: 10,
   },
@@ -82,20 +112,25 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   button: {
-    backgroundColor: '#4A90E2',
+    backgroundColor: '#3394EC',
     padding: 15,
-    borderRadius: 8,
+    borderRadius: 5,
     alignItems: 'center',
   },
   buttonText: {
+    fontWeight: 'bold',
     color: '#fff',
     fontSize: 16,
   },
   footer: {
+    backgroundColor: '#1869B2',
+    position: 'absolute',
+    justifyContent: 'space-evenly',
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    backgroundColor: '#1E2127',
-    paddingVertical: 10,
+    bottom: 0,
+    width: '100%',
+    height: 44,
+    paddingTop: 7,
   },
   footerText: {
     color: '#fff',
