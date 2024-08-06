@@ -21,6 +21,10 @@ export default function App() {
     router.replace("/home")
   };
 
+  const handlePress = () => {
+    router.replace("/workoutCreation");
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Treinos</Text>
@@ -33,7 +37,7 @@ export default function App() {
               <Text key={i} style={styles.workoutText}>2x - Lat Pulldown</Text>
             ))}
           </View>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button} onPress={handlePress}>
             <Text style={styles.buttonText}>INICIAR UM TREINO VAZIO</Text>
           </TouchableOpacity>
         </View>
