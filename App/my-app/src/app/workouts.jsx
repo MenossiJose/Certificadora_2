@@ -4,19 +4,6 @@ import { Link, router, useLocalSearchParams, useRouter } from 'expo-router';
 import { fetchExercisesByBodypart } from '../../api/exerciseDB';
 
 export default function App() {
-  const router = useRouter();
-  const item = useLocalSearchParams();
-  console.log('got item', item);
-
-  useEffect(() => {
-    if(item) getExercises(item.name);
-  },[item]);
-
-  const getExercises = async(bodypart) => {
-    let data = await fetchExercisesByBodypart(bodypart);
-    console.log('got data', data);
-  }
-
   const handleButton = () => {
     router.replace("/home")
   };
@@ -31,12 +18,8 @@ export default function App() {
       <ScrollView contentContainerStyle={styles.scrollView}>
         <View style={styles.section}>
           <Text style={styles.subHeader}>MEUS TREINOS</Text>
-          <View style={styles.workoutBox}>
-            <Text style={styles.workoutTitle}>Costas</Text>
-            {Array(5).fill().map((_, i) => (
-              <Text key={i} style={styles.workoutText}>2x - Lat Pulldown</Text>
-            ))}
-          </View>
+            <View>
+            </View>
           <TouchableOpacity style={styles.button} onPress={handlePress}>
             <Text style={styles.buttonText}>INICIAR UM TREINO VAZIO</Text>
           </TouchableOpacity>
@@ -66,6 +49,20 @@ export default function App() {
     </View>
   );
 }
+
+ /*
+  const router = useRouter();
+  const item = useLocalSearchParams();
+  console.log('got item', item);
+
+  useEffect(() => {
+    if(item) getExercises(item.name);
+  },[item]);
+
+  const getExercises = async(bodypart) => {
+    let data = await fetchExercisesByBodypart(bodypart);
+    console.log('got data', data);
+  }*/
 
 
 

@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput } from 'react-native';
 import { Ionicons, AntDesign } from '@expo/vector-icons';
 import { router } from 'expo-router';
 
@@ -8,24 +8,31 @@ const exercises = [
 ];
 
 const handleBack = () => {
-    router.replace("/workouts");
+  router.replace("/workouts");
 };
 
 const handleAddButton = () => {
-    router.replace("/workoutList");
+  router.replace("/workoutList");
 };
 
 const handleEnd = () => {
-    router.replace("/workoutExplain");
+  router.replace("/workoutExplain");
 };
 
 export default function App() {
+  const [workout, setWorkout] = useState('');
   return (
     <View style={styles.container}>
-        <TouchableOpacity onPress={handleBack}>
-            <AntDesign name="arrowleft" size={30} color="white" />
-        </TouchableOpacity>
-      <Text style={styles.header}>Costas</Text>
+      <TouchableOpacity onPress={handleBack}>
+        <AntDesign name="arrowleft" size={30} color="white" />
+      </TouchableOpacity>
+      <TextInput
+        style={styles.header}
+        placeholder="INSERIR TREINO"
+        placeholderTextColor="white" 
+        value={workout}
+        onChangeText={(text) => setWorkout(text)}
+      />
       <FlatList
         data={exercises}
         keyExtractor={(item) => item.id}
@@ -107,6 +114,5 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     fontWeight: 'bold',
-    
   },
 });

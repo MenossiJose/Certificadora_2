@@ -7,6 +7,7 @@ import { router } from 'expo-router';
 export default function App() {
   const [reps, setReps] = useState(['REPETIÇÕES', '10', '10']);
   const [weights, setWeights] = useState(['PESO', '45KG', '45KG']);
+  
   const handleBack = () => {
     router.replace("/workouts");
 };

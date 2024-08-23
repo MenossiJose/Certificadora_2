@@ -1,26 +1,45 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image } from 'react-native';
 import { Ionicons, AntDesign } from '@expo/vector-icons';
-import { router } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { fetchExercisesByBodypart } from '../../api/exerciseDB';
+import { Dropdown } from 'react-native-element-dropdown';
 
-const exercises = [
-  { id: '1', name: 'Lat Pull Down (Máquina)', muscleGroup: 'Costas' },
-  { id: '2', name: 'Lat Pull Down (Máquina)', muscleGroup: 'Costas' },
-  { id: '3', name: 'Lat Pull Down (Máquina)', muscleGroup: 'Costas' },
-  { id: '4', name: 'Lat Pull Down (Máquina)', muscleGroup: 'Costas' },
-  { id: '5', name: 'Lat Pull Down (Máquina)', muscleGroup: 'Costas' },
-  { id: '6', name: 'Lat Pull Down (Máquina)', muscleGroup: 'Costas' },
-  { id: '7', name: 'Lat Pull Down (Máquina)', muscleGroup: 'Costas' },
-  { id: '8', name: 'Lat Pull Down (Máquina)', muscleGroup: 'Costas' },
-  { id: '9', name: 'Lat Pull Down (Máquina)', muscleGroup: 'Costas' },
+
+const bodyPartMap = {
+  '1': 'back',
+  '2': 'legs',
+  '3': 'chest',
+  '4': 'shoulders',
+  '5': 'biceps',
+  // Add more mappings as needed
+};
+
+const data = [
+  { label: 'Costas', value: '1' },
+  { label: 'Pernas', value: '2' },
+  { label: 'Peito', value: '3' },
+  { label: 'Ombros', value: '4' },
+  { label: 'Bíceps', value: '5' },
+  // Add more items as needed
 ];
 
 export default function App() {
   const [selectedId, setSelectedId] = useState(null);
+  const [exercises, setExercises] = useState([]);
+  const router = useRouter();
+  const item = useLocalSearchParams();
+  const [value, setValue] = useState(null);
+
+  const getExercises = async(bodyPart) => {
+    let data = await fetchExercisesByBodypart(bodyPart);
+    setExercises(data);
+    console.log('got data', data);
+  }
 
   const handleBack = () => {
     router.replace("/workoutCreation");
-    };
+  };
 
   const renderItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? '#3A3D54' : '#2D2F3A';
@@ -32,10 +51,10 @@ export default function App() {
         onPress={() => setSelectedId(item.id)}
         style={[styles.exerciseItem, { backgroundColor, borderColor }]}
       >
-        <Image source={{uri: 'https://img.icons8.com/ios-filled/50/ffffff/lat-pulldown.png'}} style={styles.exerciseIcon} />
+        <Image source={{uri: item.gifUrl}} style={styles.exerciseIcon} />
         <View style={styles.exerciseDetails}>
           <Text style={styles.exerciseText}>{item.name}</Text>
-          <Text style={styles.muscleGroup}>{item.muscleGroup}</Text>
+          <Text style={styles.muscleGroup}>{item.target}</Text>
         </View>
         {icon}
       </TouchableOpacity>
@@ -44,10 +63,33 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-        <TouchableOpacity onPress={handleBack}>
-            <AntDesign name="arrowleft" size={30} color="white" />
-        </TouchableOpacity>
+      <TouchableOpacity onPress={handleBack}>
+        <AntDesign name="arrowleft" size={30} color="white" />
+      </TouchableOpacity>
       <Text style={styles.header}>Exercícios</Text>
+
+      <Dropdown
+        style={styles.dropdown}
+        placeholderStyle={styles.placeholderStyle}
+        selectedTextStyle={styles.selectedTextStyle}
+        inputSearchStyle={styles.inputSearchStyle}
+        iconStyle={styles.iconStyle}
+        data={data}
+        search
+        maxHeight={300}
+        labelField="label"
+        valueField="value"
+        placeholder="Select item"
+        searchPlaceholder="Search..."
+        value={value}
+        onChange={item => {
+          setValue(item.value);
+          getExercises(bodyPartMap[item.value]); // Fetch exercises based on the selected body part
+        }}
+        renderLeftIcon={() => (
+          <AntDesign style={styles.icon} color="black" name="Safety" size={20} />
+        )}
+      />
       
       <FlatList
         data={exercises}
@@ -96,5 +138,30 @@ const styles = StyleSheet.create({
   muscleGroup: {
     color: '#6C6D7A',
     fontSize: 14,
+  },
+  dropdown: {
+    margin: 16,
+    height: 50,
+    borderBottomColor: 'gray',
+  },
+  icon: {
+    marginRight: 5,
+    color: 'white',
+  },
+  placeholderStyle: {
+    fontSize: 16,
+    color: 'white',
+  },
+  selectedTextStyle: {
+    fontSize: 16,
+    color: 'white',
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
   },
 });
