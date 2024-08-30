@@ -22,10 +22,10 @@ git clone https://github.com/MenossiJose/Certificadora_2.git
 
 cd Certificadora_2
 
-cd backend
+cd Server
 npm install
 
-cd ../frontend
+cd ../App/my-app
 npm install
 # ou se preferir usar Yarn
 yarn install
