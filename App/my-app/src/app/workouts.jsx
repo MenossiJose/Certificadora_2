@@ -12,42 +12,87 @@ export default function App() {
     router.replace("/workoutCreation");
   };
 
-  return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Treinos</Text>
-      <ScrollView contentContainerStyle={styles.scrollView}>
-        <View style={styles.section}>
-          <Text style={styles.subHeader}>MEUS TREINOS</Text>
+  export default function Workouts() {
+    const router = useRouter();
+    const { selectedExerciseId } = useSearchParams(); // Recebe o ID do exercício selecionado
+    const [selectedExercise, setSelectedExercise] = useState(null);
+  
+    // Função para buscar o exercício selecionado
+    const getSelectedExercise = async (id) => {
+      if (id) {
+        const exercise = await fetchExerciseById(id);
+        setSelectedExercise(exercise);
+      }
+    };
+  
+    useEffect(() => {
+      if (selectedExerciseId) {
+        getSelectedExercise(selectedExerciseId);
+      }
+    }, [selectedExerciseId]);
+  
+    const handleButton = () => {
+      router.replace("/home");
+    };
+  
+    const handlePress = () => {
+      router.replace("/workoutCreation");
+    };
+  
+    return (
+      <View style={styles.container}>
+        <Text style={styles.header}>Treinos</Text>
+        <ScrollView contentContainerStyle={styles.scrollView}>
+          <View style={styles.section}>
+            <Text style={styles.subHeader}>MEUS TREINOS</Text>
             <View>
+              {selectedExercise && (
+                <View style={styles.workoutBox}>
+                  <Text style={styles.workoutTitle}>Exercício Selecionado</Text>
+                  <Text style={styles.workoutText}>{selectedExercise.name}</Text>
+                  <Text style={styles.workoutText}>Grupo Muscular: {selectedExercise.target}</Text>
+                  <Image source={{ uri: selectedExercise.gifUrl }} style={styles.exerciseImage} />
+                </View>
+              )}
             </View>
-          <TouchableOpacity style={styles.button} onPress={handlePress}>
-            <Text style={styles.buttonText}>INICIAR UM TREINO VAZIO</Text>
+            <TouchableOpacity style={styles.button} onPress={handlePress}>
+              <Text style={styles.buttonText}>INICIAR UM TREINO VAZIO</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.section}>
+            <Text style={styles.subHeader}>MODELOS DE TREINO PRONTOS</Text>
+            <View style={styles.workoutBox}>
+              <Text style={styles.workoutTitle}>Workout A</Text>
+              <View style={styles.container}>
+                <Text style={styles.workoutText}>2x - Lat Pulldown</Text>
+                <Text style={styles.workoutText}>3x - Bench Press</Text>
+                <Text style={styles.workoutText}>4x - Squat</Text>
+                <Text style={styles.workoutText}>2x - Deadlift</Text>
+                <Text style={styles.workoutText}>3x - Bicep Curl</Text>
+              </View>
+            </View>
+            <View style={styles.workoutBox}>
+              <Text style={styles.workoutTitle}>Workout B</Text>
+              <View style={styles.container}>
+                <Text style={styles.workoutText}>2x - Shoulder Press</Text>
+                <Text style={styles.workoutText}>3x - Leg Press</Text>
+                <Text style={styles.workoutText}>4x - Pull-Up</Text>
+                <Text style={styles.workoutText}>3x - Tricep Dips</Text>
+                <Text style={styles.workoutText}>2x - Bulgarian Split Squat</Text>
+              </View>
+            </View>
+          </View>
+        </ScrollView>
+        <View style={styles.footer}>
+          <TouchableOpacity onPress={handleButton}>
+            <Image source={require('./img/user_nav.png')} />
           </TouchableOpacity>
+          <Image source={require('./img/dumbell_nav.png')} />
         </View>
-        <View style={styles.section}>
-          <Text style={styles.subHeader}>MODELOS DE TREINO PRONTOS</Text>
-          <View style={styles.workoutBox}>
-            <Text style={styles.workoutTitle}>Workout A</Text>
-            {Array(5).fill().map((_, i) => (
-              <Text key={i} style={styles.workoutText}>2x - Lat Pulldown</Text>
-            ))}
-          </View>
-          <View style={styles.workoutBox}>
-            <Text style={styles.workoutTitle}>Workout B</Text>
-            {Array(5).fill().map((_, i) => (
-              <Text key={i} style={styles.workoutText}>2x - Lat Pulldown</Text>
-            ))}
-          </View>
-        </View>
-      </ScrollView>
-      <View style={styles.footer}>
-        <TouchableOpacity onPress={handleButton}>
-          <Image source={require('./img/user_nav.png')} />
-        </TouchableOpacity>
-        <Image source={require('./img/dumbell_nav.png')} />
       </View>
-    </View>
-  );
+    );
+  }
+  
 }
 
  /*
