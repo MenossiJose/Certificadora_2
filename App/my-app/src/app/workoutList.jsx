@@ -5,14 +5,12 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { fetchExercisesByBodypart } from '../../api/exerciseDB';
 import { Dropdown } from 'react-native-element-dropdown';
 
-
 const bodyPartMap = {
   '1': 'back',
   '2': 'legs',
   '3': 'chest',
   '4': 'shoulders',
   '5': 'biceps',
-  // Add more mappings as needed
 };
 
 const data = [
@@ -21,14 +19,12 @@ const data = [
   { label: 'Peito', value: '3' },
   { label: 'Ombros', value: '4' },
   { label: 'Bíceps', value: '5' },
-  // Add more items as needed
 ];
 
 export default function App() {
   const [selectedId, setSelectedId] = useState(null);
   const [exercises, setExercises] = useState([]);
   const router = useRouter();
-  const item = useLocalSearchParams();
   const [value, setValue] = useState(null);
 
   const getExercises = async(bodyPart) => {
@@ -41,6 +37,13 @@ export default function App() {
     router.replace("/workoutCreation");
   };
 
+  const handleExerciseSelect = (exercise) => {
+    router.push({
+      pathname: "/workouts",
+      params: { selectedExercise: JSON.stringify(exercise) }
+    });
+  };
+
   const renderItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? '#3A3D54' : '#2D2F3A';
     const borderColor = item.id === selectedId ? 'white' : '#2D2F3A';
@@ -48,7 +51,7 @@ export default function App() {
 
     return (
       <TouchableOpacity
-        onPress={() => setSelectedId(item.id)}
+        onPress={() => handleExerciseSelect(item)}
         style={[styles.exerciseItem, { backgroundColor, borderColor }]}
       >
         <Image source={{uri: item.gifUrl}} style={styles.exerciseIcon} />
@@ -79,12 +82,12 @@ export default function App() {
         maxHeight={300}
         labelField="label"
         valueField="value"
-        placeholder="Select item"
-        searchPlaceholder="Search..."
+        placeholder="Selecione um grupo muscular"
+        searchPlaceholder="Buscar..."
         value={value}
         onChange={item => {
           setValue(item.value);
-          getExercises(bodyPartMap[item.value]); // Fetch exercises based on the selected body part
+          getExercises(bodyPartMap[item.value]);
         }}
         renderLeftIcon={() => (
           <AntDesign style={styles.icon} color="black" name="Safety" size={20} />

@@ -17,7 +17,7 @@ export default function App() {
     const token = await AsyncStorage.getItem('token');
     console.log(token);
     axios
-      .post('http://192.168.3.4:3000/userdata', { token: token })
+      .post('http://168.181.48.31:3000/userdata', { token: token })
       .then((res) => {
         if (res.data.status === 'ok') {
           const userData = res.data.data;
@@ -52,7 +52,7 @@ export default function App() {
       position,
     };
     
-    axios.post('http://192.168.3.4:3000/update-profile', userData).
+    axios.post('http://168.181.48.31:3000/update-profile', userData).
       then((res) => {
         console.log(res.data, "aqui e o perfil no update");
         if (res.data.status == 'ok') {

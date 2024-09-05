@@ -26,7 +26,7 @@ function Login() {
       email,
       password,
     };
-    axios.post('http://192.168.3.4:3000/login-user', userData).
+    axios.post('http://168.181.48.31:3000/login-user', userData).
     then((res) => {console.log(res.data);
       if (res.data.status == 'ok') {
         Alert.alert('Logged in Successfully!!');
